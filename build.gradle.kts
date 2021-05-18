@@ -8,6 +8,7 @@ group = "net.axay"
 version = "0.0.1"
 
 repositories {
+    mavenLocal()
     mavenCentral()
     maven("https://repo.codemc.io/repository/maven-snapshots/")
 }
@@ -16,6 +17,7 @@ dependencies {
     implementation(kotlin("stdlib"))
 
     compileOnly("org.spigotmc:spigot:1.16.5-R0.1-SNAPSHOT")
+    compileOnly("net.axay:spigot-language-kotlin:1.0.0")
     api("net.axay:kspigot:1.16.27")
 }
 
