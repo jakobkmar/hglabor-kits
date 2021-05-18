@@ -9,10 +9,14 @@ version = "0.0.1"
 
 repositories {
     mavenCentral()
+    maven("https://repo.codemc.io/repository/maven-snapshots/")
 }
 
 dependencies {
     implementation(kotlin("stdlib"))
+
+    compileOnly("org.spigotmc:spigot:1.16.5-R0.1-SNAPSHOT")
+    api("net.axay:kspigot:1.16.27")
 }
 
 tasks {
