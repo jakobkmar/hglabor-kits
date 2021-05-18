@@ -6,14 +6,14 @@ abstract class KitItem {
     abstract val stack: ItemStack
 }
 
-class ClickableKitItem(
+class ClickableKitItem<P : KitProperties>(
     override val stack: ItemStack,
     val cooldown: Long,
-    val onClick: () -> Unit,
+    val onClick: (KitContext<P>) -> Unit,
 ) : KitItem()
 
-class HoldableKitItem(
+class HoldableKitItem<P : KitProperties>(
     override val stack: ItemStack,
     val period: Long,
-    val onHold: () -> Unit,
+    val onHold: (KitContext<P>) -> Unit,
 ) : KitItem()

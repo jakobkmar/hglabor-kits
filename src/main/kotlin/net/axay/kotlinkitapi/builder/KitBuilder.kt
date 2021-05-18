@@ -8,7 +8,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerEvent
 import org.bukkit.inventory.ItemStack
 
-class KitBuilder(val properties: () -> KitProperties) {
+class KitBuilder<P : KitProperties>(val properties: () -> P) {
     inner class Internal {
         val items = ArrayList<KitItem>()
 
@@ -19,11 +19,11 @@ class KitBuilder(val properties: () -> KitProperties) {
 
     val internalBuilder = this.Internal()
 
-    fun clickableItem(stack: ItemStack, cooldown: Long, onClick: () -> Unit) {
+    fun clickableItem(stack: ItemStack, cooldown: Long, onClick: (KitContext<P>) -> Unit) {
         internalBuilder.items += ClickableKitItem(stack, cooldown, onClick)
     }
 
-    fun holdableItem(stack: ItemStack, period: Long, onHold: () -> Unit) {
+    fun holdableItem(stack: ItemStack, period: Long, onHold: (KitContext<P>) -> Unit) {
         internalBuilder.items += HoldableKitItem(stack, period, onHold)
     }
 
