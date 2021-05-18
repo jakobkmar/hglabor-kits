@@ -4,7 +4,7 @@ import kotlinx.serialization.json.*
 import net.axay.kotlinkitapi.config.Config
 import kotlin.reflect.KProperty
 
-abstract class KitProperties(val kit: Kit) {
+abstract class KitProperties(val kitname: String) {
     abstract class KitProperty<T> {
         abstract val defaultValue: T
 
@@ -14,7 +14,7 @@ abstract class KitProperties(val kit: Kit) {
         private var value: T? = null
 
         operator fun getValue(thisRef: Any, property: KProperty<*>): T {
-            if (kitName == null) kitName = (thisRef as KitProperties).kit.name
+            if (kitName == null) kitName = (thisRef as KitProperties).kitname
             if (propertyName == null) propertyName = property.name
 
             val currentValue = value
@@ -62,5 +62,22 @@ abstract class KitProperties(val kit: Kit) {
         override fun parseJsonElement(jsonElement: JsonElement) = jsonElement.jsonPrimitive.let {
             if (it.isString) it.toString() else null
         }
+    }
+
+    fun boolean(default: Boolean) = BooleanProperty(default)
+
+    fun int(default: Int) = IntProperty(default)
+
+    fun long(default: Long) = LongProperty(default)
+
+    fun float(default: Float) = FloatProperty(default)
+
+    fun double(default: Double) = DoubleProperty(default)
+
+    fun string(default: String) = StringProperty(default)
+
+    inline fun <reified T : Any> any(default: T) = object : KitProperty<T>() {
+        override val defaultValue = default
+        override fun parseJsonElement(jsonElement: JsonElement): T? = Json.decodeFromJsonElement(jsonElement)
     }
 }

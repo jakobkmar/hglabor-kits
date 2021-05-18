@@ -2,24 +2,19 @@
 
 package net.axay.kotlinkitapi.builder
 
-import net.axay.kotlinkitapi.api.ClickableKitItem
-import net.axay.kotlinkitapi.api.HoldableKitItem
-import net.axay.kotlinkitapi.api.Kit
-import net.axay.kotlinkitapi.api.KitItem
+import net.axay.kotlinkitapi.api.*
 import net.axay.kspigot.event.listen
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerEvent
 import org.bukkit.inventory.ItemStack
 
-class KitBuilder(
-    val name: String,
-) {
+class KitBuilder(val properties: () -> KitProperties) {
     inner class Internal {
         val items = ArrayList<KitItem>()
 
         val kitPlayerEvents = ArrayList<Listener>()
 
-        fun build() = Kit(name, items, kitPlayerEvents)
+        fun build() = Kit(properties, items, kitPlayerEvents)
     }
 
     val internalBuilder = this.Internal()
