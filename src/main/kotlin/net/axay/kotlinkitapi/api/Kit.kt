@@ -7,6 +7,7 @@ open class Kit internal constructor(
     val items: Collection<KitItem>,
 ) {
     companion object {
-        operator fun invoke(name: String, builder: KitBuilder.() -> Unit) = KitBuilder(name).apply(builder).build()
+        inline operator fun invoke(name: String, builder: KitBuilder.() -> Unit) =
+            KitBuilder(name).apply(builder).internalBuilder.build()
     }
 }
