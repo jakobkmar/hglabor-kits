@@ -8,13 +8,13 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerEvent
 import org.bukkit.inventory.ItemStack
 
-class KitBuilder<P : KitProperties>(val properties: () -> P) {
+class KitBuilder<P : KitProperties>(val key: String, val properties: () -> P) {
     inner class Internal {
         val items = ArrayList<KitItem>()
 
         val kitPlayerEvents = ArrayList<Listener>()
 
-        fun build() = Kit(properties, items, kitPlayerEvents)
+        fun build() = Kit(key, properties, items, kitPlayerEvents)
     }
 
     val internalBuilder = this.Internal()

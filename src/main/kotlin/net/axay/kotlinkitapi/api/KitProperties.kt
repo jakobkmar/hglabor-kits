@@ -9,12 +9,12 @@ import net.axay.kspigot.extensions.bukkit.warn
 import net.axay.kspigot.extensions.server
 import kotlin.reflect.KProperty
 
-abstract class KitProperties(val kitname: String) {
+abstract class KitProperties {
+    lateinit var kitname: String
+        internal set
+
     abstract class KitProperty<T> {
         abstract val defaultValue: T
-
-        protected var kitName: String? = null
-        protected var propertyName: String? = null
 
         protected var value: T? = null
 
@@ -29,28 +29,23 @@ abstract class KitProperties(val kitname: String) {
         override val defaultValue = default
 
         override fun getValue(thisRef: Any, property: KProperty<*>): T {
-            if (kitName == null)
-                kitName = (thisRef as? KitProperties)?.kitname
-                    ?: error("Using a kit property outside of a KitProperties class")
-            if (propertyName == null)
-                propertyName = property.name
-
             val currentValue = value
             if (currentValue != null) return currentValue
 
             val newValue = try {
                 try {
-                    ConfigManager.kits.getConfig(kitName!!).extract<T>(propertyName!!)
+                    ConfigManager.kits.getConfig(kitname).extract<T>(property.name)
                 } catch (missing: ConfigException.Missing) {
                     defaultValue
                 }
             } catch (exc: Exception) {
-                server.consoleSender.warn("The property '$propertyName' of kit '$kitName' is given, but it could not be parsed! Using default value as a fallback.")
+                server.consoleSender.warn("The property '${property.name}' of kit '$kitname' is given, but it could not be parsed! Using default value as a fallback.")
                 null
             } ?: defaultValue
             return newValue.also { value = it }
         }
     }
+
 
     fun boolean(default: Boolean) = any(default)
     fun int(default: Int) = any(default)
