@@ -2,6 +2,7 @@
 
 package net.axay.kotlinkitapi.api
 
+import com.typesafe.config.ConfigException
 import io.github.config4k.extract
 import net.axay.kotlinkitapi.config.ConfigManager
 import net.axay.kspigot.extensions.bukkit.warn
@@ -38,7 +39,11 @@ abstract class KitProperties(val kitname: String) {
             if (currentValue != null) return currentValue
 
             val newValue = try {
-                ConfigManager.kits.getConfig(kitName!!).extract<T>(propertyName!!)
+                try {
+                    ConfigManager.kits.getConfig(kitName!!).extract<T>(propertyName!!)
+                } catch (missing: ConfigException.Missing) {
+                    defaultValue
+                }
             } catch (exc: Exception) {
                 server.consoleSender.warn("The property '$propertyName' of kit '$kitName' is given, but it could not be parsed! Using default value as a fallback.")
                 null
