@@ -6,7 +6,13 @@ import net.axay.kotlinkitapi.builder.KitBuilder
 import org.bukkit.event.Listener
 
 open class Kit<P : KitProperties> private constructor(
+    /**
+     * The unique identifier of this kit.
+     */
     val key: String,
+    /**
+     * The properties of this kit.
+     */
     val properties: P,
 ) {
     class Internal internal constructor() {
