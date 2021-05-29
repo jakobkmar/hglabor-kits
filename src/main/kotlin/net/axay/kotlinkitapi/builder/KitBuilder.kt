@@ -4,31 +4,20 @@ package net.axay.kotlinkitapi.builder
 
 import net.axay.kotlinkitapi.api.*
 import net.axay.kspigot.event.listen
-import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerEvent
 import org.bukkit.inventory.ItemStack
 
-class KitBuilder<P : KitProperties>(val key: String, val properties: P) {
-    inner class Internal {
-        val items = ArrayList<KitItem>()
-
-        val kitPlayerEvents = ArrayList<Listener>()
-
-        fun build() = Kit(key, properties, items, kitPlayerEvents)
-    }
-
-    val internalBuilder = this.Internal()
-
+class KitBuilder<P : KitProperties>(val kit: Kit<P>) {
     fun clickableItem(stack: ItemStack, cooldown: Long, onClick: (KitContext<P>) -> Unit) {
-        internalBuilder.items += ClickableKitItem(stack, cooldown, onClick)
+        kit.internal.items += ClickableKitItem(stack, cooldown, onClick)
     }
 
     fun holdableItem(stack: ItemStack, period: Long, onHold: (KitContext<P>) -> Unit) {
-        internalBuilder.items += HoldableKitItem(stack, period, onHold)
+        kit.internal.items += HoldableKitItem(stack, period, onHold)
     }
 
     inline fun <reified T : PlayerEvent> kitPlayerEvent(crossinline callback: (T) -> Unit) {
-        internalBuilder.kitPlayerEvents += listen<T>(register = false) {
+        kit.internal.kitPlayerEvents += listen<T>(register = false) {
             // TODO if player kit == this kit
             callback.invoke(it)
         }
