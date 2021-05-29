@@ -8,7 +8,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerEvent
 import org.bukkit.inventory.ItemStack
 
-class KitBuilder<P : KitProperties>(val key: String, val properties: () -> P) {
+class KitBuilder<P : KitProperties>(val key: String, val properties: P) {
     inner class Internal {
         val items = ArrayList<KitItem>()
 
