@@ -1,7 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.5.0"
+    kotlin("jvm") version "1.5.10"
+    kotlin("plugin.serialization") version "1.5.10"
 }
 
 group = "net.axay"
@@ -17,8 +18,11 @@ dependencies {
     implementation(kotlin("stdlib"))
 
     compileOnly("org.spigotmc:spigot:1.16.5-R0.1-SNAPSHOT")
-    compileOnly("net.axay:spigot-language-kotlin:1.0.0")
-    api("net.axay:kspigot:1.16.27")
+    compileOnly("net.axay:spigot-language-kotlin:1.0.3")
+
+    api("net.axay:kspigot:1.16.28")
+
+    testCompileOnly("org.spigotmc:spigot:1.16.5-R0.1-SNAPSHOT")
 }
 
 tasks {
