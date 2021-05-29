@@ -6,7 +6,7 @@ import net.axay.kspigot.config.PluginFile
 
 object ConfigManager {
     val kits: Config by lazy {
-        val configString = PluginFile("kits.json").readText()
+        val configString = PluginFile("kits.conf").readText()
         ConfigFactory.parseString(configString)
     }
 }
