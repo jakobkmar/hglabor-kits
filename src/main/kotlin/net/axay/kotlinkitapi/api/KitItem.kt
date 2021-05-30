@@ -1,19 +1,22 @@
 package net.axay.kotlinkitapi.api
 
+import org.bukkit.entity.Player
+import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
 
-abstract class KitItem {
+sealed class KitItem {
     abstract val stack: ItemStack
 }
 
-class ClickableKitItem<P : KitProperties>(
+class SimpleKitItem(override val stack: ItemStack) : KitItem()
+
+class ClickableKitItem(
     override val stack: ItemStack,
-    val cooldown: Long,
-    val onClick: (KitContext<P>) -> Unit,
+    val onClick: (PlayerInteractEvent) -> Unit,
 ) : KitItem()
 
-class HoldableKitItem<P : KitProperties>(
+class HoldableKitItem(
     override val stack: ItemStack,
     val period: Long,
-    val onHold: (KitContext<P>) -> Unit,
+    val onHold: (Player) -> Unit,
 ) : KitItem()
