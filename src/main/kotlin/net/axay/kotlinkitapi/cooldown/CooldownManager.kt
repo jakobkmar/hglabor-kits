@@ -8,7 +8,7 @@ import org.bukkit.entity.Player
 import java.util.*
 
 object CooldownManager {
-    private val cooldownCoroutineScope = CoroutineScope(Dispatchers.Default)
+    private val cooldownCoroutineScope = CoroutineScope(Dispatchers.IO)
 
     private val cooldownMap = HashMap<Cooldown, MutableSet<UUID>>()
 
