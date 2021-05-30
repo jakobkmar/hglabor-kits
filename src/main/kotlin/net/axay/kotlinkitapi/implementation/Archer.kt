@@ -19,22 +19,24 @@ class ArcherProperties : KitProperties() {
     val effectDuration by int(80)
     val effectMultiplier by int(0)
     val arrowAmount by int(6)
-    val likelihood by int(50)
-    val potionEffectTypes = listOf(
-            PotionEffectType.BLINDNESS,
-            PotionEffectType.SLOW_FALLING,
-            PotionEffectType.LEVITATION,
-            PotionEffectType.REGENERATION,
-            PotionEffectType.SLOW_DIGGING,
-            PotionEffectType.HUNGER,
-            PotionEffectType.CONFUSION,
-            PotionEffectType.GLOWING,
-            PotionEffectType.WITHER,
-            PotionEffectType.POISON,
-            PotionEffectType.INCREASE_DAMAGE)
+    val probability by int(50)
 }
 
 val Archer = Kit("Archer", ::ArcherProperties) {
+    val potionEffectTypes = listOf(
+        PotionEffectType.BLINDNESS,
+        PotionEffectType.SLOW_FALLING,
+        PotionEffectType.LEVITATION,
+        PotionEffectType.REGENERATION,
+        PotionEffectType.SLOW_DIGGING,
+        PotionEffectType.HUNGER,
+        PotionEffectType.CONFUSION,
+        PotionEffectType.GLOWING,
+        PotionEffectType.WITHER,
+        PotionEffectType.POISON,
+        PotionEffectType.INCREASE_DAMAGE
+    )
+
     simpleItem(ItemStack(Material.BOW))
 
     kitPlayerEvent<ProjectileHitEvent>({ it.entity.shooter as? Player }) { it, shooter ->
@@ -44,10 +46,16 @@ val Archer = Kit("Archer", ::ArcherProperties) {
     }
 
     kitPlayerEvent<EntityShootBowEvent>({ it.entity as? Player }) { it, _ ->
-        if (Random().nextInt(99) + 1 > this.kit.properties.likelihood) return@kitPlayerEvent
+        if ((0..100).random() > this.kit.properties.probability) return@kitPlayerEvent
         if (it.projectile !is Arrow) return@kitPlayerEvent
         val arrow = it.projectile as Arrow
-        arrow.addCustomEffect(PotionEffect(this.kit.properties.potionEffectTypes.random(), this.kit.properties.effectDuration * 20, this.kit.properties.effectMultiplier), false)
+        arrow.addCustomEffect(
+            PotionEffect(
+                potionEffectTypes.random(),
+                this.kit.properties.effectDuration * 20,
+                this.kit.properties.effectMultiplier
+            ), false
+        )
         arrow.pickupStatus = AbstractArrow.PickupStatus.DISALLOWED
     }
 }
