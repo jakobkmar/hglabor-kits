@@ -7,6 +7,10 @@ import io.github.config4k.extract
 import net.axay.kotlinkitapi.config.ConfigManager
 import net.axay.kspigot.extensions.bukkit.warn
 import net.axay.kspigot.extensions.server
+import org.bukkit.Particle
+import org.bukkit.Sound
+import org.bukkit.potion.PotionEffect
+import org.bukkit.potion.PotionEffectType
 import kotlin.reflect.KProperty
 
 abstract class KitProperties {
@@ -53,4 +57,6 @@ abstract class KitProperties {
     fun float(default: Float) = any(default)
     fun double(default: Double) = any(default)
     fun string(default: String) = any(default)
+    fun sound(default: Sound) = any(default)
+    fun particle(default: Particle) = any(default)
 }
