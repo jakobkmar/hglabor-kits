@@ -2,10 +2,7 @@
 
 package net.axay.kotlinkitapi.builder
 
-import net.axay.kotlinkitapi.api.ClickableKitItem
-import net.axay.kotlinkitapi.api.HoldableKitItem
-import net.axay.kotlinkitapi.api.Kit
-import net.axay.kotlinkitapi.api.KitProperties
+import net.axay.kotlinkitapi.api.*
 import net.axay.kotlinkitapi.cooldown.Cooldown
 import net.axay.kotlinkitapi.cooldown.CooldownManager
 import net.axay.kotlinkitapi.cooldown.CooldownScope
@@ -20,6 +17,10 @@ import org.bukkit.inventory.ItemStack
 
 class KitBuilder<P : KitProperties>(val kit: Kit<P>) {
     private var currentItemId = 0
+
+    fun simpleItem(stack: ItemStack) {
+        kit.internal.items[currentItemId++] = SimpleKitItem(stack)
+    }
 
     fun clickableItem(stack: ItemStack, onClick: (PlayerInteractEvent) -> Unit) {
         kit.internal.items[currentItemId++] = ClickableKitItem(stack, onClick)
