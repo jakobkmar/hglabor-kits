@@ -12,8 +12,8 @@ abstract class CooldownProperties(default: Long) : KitProperties() {
     val cooldownInstance = Cooldown(this::cooldown)
 }
 
-fun <P : CooldownProperties> KitBuilder<P>.applyCooldown(player: Player, block: CooldownScope.() -> Unit) =
+inline fun <P : CooldownProperties> KitBuilder<P>.applyCooldown(player: Player, block: CooldownScope.() -> Unit) =
     player.applyCooldown(kit.properties.cooldownInstance, block)
 
-fun <P : CooldownProperties> KitBuilder<P>.applyCooldown(event: PlayerEvent, block: CooldownScope.() -> Unit) =
+inline fun <P : CooldownProperties> KitBuilder<P>.applyCooldown(event: PlayerEvent, block: CooldownScope.() -> Unit) =
     event.applyCooldown(kit.properties.cooldownInstance, block)

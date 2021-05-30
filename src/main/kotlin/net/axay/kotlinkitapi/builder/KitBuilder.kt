@@ -27,7 +27,7 @@ class KitBuilder<P : KitProperties>(val kit: Kit<P>) {
         }
     }
 
-    fun Player.applyCooldown(cooldown: Cooldown, block: CooldownScope.() -> Unit) {
+    inline fun Player.applyCooldown(cooldown: Cooldown, block: CooldownScope.() -> Unit) {
         if (!CooldownManager.hasCooldown(cooldown, this)) {
             if (CooldownScope().apply(block).shouldApply) {
                 CooldownManager.addCooldown(cooldown, this)
@@ -35,6 +35,6 @@ class KitBuilder<P : KitProperties>(val kit: Kit<P>) {
         }
     }
 
-    fun PlayerEvent.applyCooldown(cooldown: Cooldown, block: CooldownScope.() -> Unit) =
+    inline fun PlayerEvent.applyCooldown(cooldown: Cooldown, block: CooldownScope.() -> Unit) =
         player.applyCooldown(cooldown, block)
 }
