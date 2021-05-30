@@ -8,6 +8,7 @@ import net.axay.kotlinkitapi.cooldown.CooldownManager
 import net.axay.kotlinkitapi.cooldown.CooldownScope
 import net.axay.kspigot.event.listen
 import org.bukkit.entity.Player
+import org.bukkit.event.Event
 import org.bukkit.event.player.PlayerEvent
 import org.bukkit.inventory.ItemStack
 
@@ -20,10 +21,21 @@ class KitBuilder<P : KitProperties>(val kit: Kit<P>) {
         kit.internal.items += HoldableKitItem(stack, period, onHold)
     }
 
-    inline fun <reified T : PlayerEvent> kitPlayerEvent(crossinline callback: (T) -> Unit) {
+    inline fun <reified T : PlayerEvent> kitPlayerEvent(crossinline callback: (event: T) -> Unit) {
         kit.internal.kitPlayerEvents += listen<T>(register = false) {
             // TODO if player kit == this kit
             callback.invoke(it)
+        }
+    }
+
+    inline fun <reified T : Event> kitPlayerEvent(
+        crossinline playerGetter: (T) -> Player?,
+        crossinline callback: (event: T, player: Player) -> Unit,
+    ) {
+        kit.internal.kitPlayerEvents += listen<T>(register = false) {
+            val player = playerGetter(it) ?: return@listen
+            // TODO if player kit == this kit
+            callback(it, player)
         }
     }
 
