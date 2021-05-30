@@ -20,8 +20,18 @@ class ArcherProperties : KitProperties() {
     val effectMultiplier by int(0)
     val arrowAmount by int(6)
     val likelihood by int(50)
-    val potionEffectTypes = listOf(PotionEffectType.BLINDNESS, PotionEffectType.SLOW_FALLING, PotionEffectType.LEVITATION, PotionEffectType.REGENERATION, PotionEffectType.SLOW_DIGGING, PotionEffectType.HUNGER, PotionEffectType.CONFUSION, PotionEffectType.GLOWING,
-            PotionEffectType.WITHER, PotionEffectType.POISON, PotionEffectType.INCREASE_DAMAGE)
+    val potionEffectTypes = listOf(
+            PotionEffectType.BLINDNESS,
+            PotionEffectType.SLOW_FALLING,
+            PotionEffectType.LEVITATION,
+            PotionEffectType.REGENERATION,
+            PotionEffectType.SLOW_DIGGING,
+            PotionEffectType.HUNGER,
+            PotionEffectType.CONFUSION,
+            PotionEffectType.GLOWING,
+            PotionEffectType.WITHER,
+            PotionEffectType.POISON,
+            PotionEffectType.INCREASE_DAMAGE)
 }
 
 val Archer = Kit("Archer", ::ArcherProperties) {
@@ -37,7 +47,7 @@ val Archer = Kit("Archer", ::ArcherProperties) {
         if (Random().nextInt(99) + 1 > this.kit.properties.likelihood) return@kitPlayerEvent
         if (it.projectile !is Arrow) return@kitPlayerEvent
         val arrow = it.projectile as Arrow
-        arrow.addCustomEffect(PotionEffect(this.kit.properties.potionEffectTypes.random(), this.kit.properties.effectDuration * 20, this.kit.properties.effectMultiplier),false)
+        arrow.addCustomEffect(PotionEffect(this.kit.properties.potionEffectTypes.random(), this.kit.properties.effectDuration * 20, this.kit.properties.effectMultiplier), false)
         arrow.pickupStatus = AbstractArrow.PickupStatus.DISALLOWED
     }
 }
