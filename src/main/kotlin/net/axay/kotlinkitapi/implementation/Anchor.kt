@@ -11,7 +11,7 @@ import org.bukkit.util.Vector
 
 class AnchorProperties : KitProperties() {
     val sound by sound(Sound.BLOCK_ANVIL_PLACE)
-    val loudness by float(0.2f)
+    val volume by float(0.2f)
 }
 
 val Anchor = Kit("Anchor", ::AnchorProperties) {
@@ -21,6 +21,6 @@ val Anchor = Kit("Anchor", ::AnchorProperties) {
         task(delay = 1L, howOften = 1L) {
             target.velocity = Vector(0, 0, 0)
         }
-        damager.playSound(target.location, this.kit.properties.sound, this.kit.properties.loudness, 1f)
+        damager.playSound(target.location, this.kit.properties.sound, this.kit.properties.volume, 1f)
     }
 }
