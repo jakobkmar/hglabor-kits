@@ -121,7 +121,8 @@ kitPlayerEvent<PlayerToggleSneakEvent> {
 ##### Final result of Ninja kit example
 
 You can view the final implementation of the Ninja
-kit [here](/blob/main/src/main/kotlin/net/axay/hglabor-kits/implementation/Ninja.kt).
+kit [here](https://github.com/bluefireoly/hglabor-kits/blob/main/src/main/kotlin/net/axay/kotlinkitapi/implementation/Ninja.kt)
+.
 
 Going further, there are features which we did not use when creating the Ninja kit:
 
