@@ -18,19 +18,38 @@ import org.bukkit.inventory.ItemStack
 class KitBuilder<P : KitProperties>(val kit: Kit<P>) {
     private var currentItemId = 0
 
+    /**
+     * This just gives the [stack] to the player if
+     * he has the kit.
+     */
     fun simpleItem(stack: ItemStack) {
         kit.internal.items[currentItemId++] = SimpleKitItem(stack)
     }
 
+    /**
+     * Gives the [stack] to the player if he has the kit
+     * and executed the [onClick] callback when the player
+     * interacts using the item.
+     */
     fun clickableItem(stack: ItemStack, onClick: (PlayerInteractEvent) -> Unit) {
         kit.internal.items[currentItemId++] = ClickableKitItem(stack, onClick)
     }
 
+    /**
+     * Gives the [stack] to the player if he has the kit.
+     *
+     * Repeatedly executed the [onHold] block (in the given [period]) when
+     * the player is holding the [stack].
+     */
     @ExperimentalKitApi
     fun holdableItem(stack: ItemStack, period: Long, onHold: (Player) -> Unit) {
         kit.internal.items[currentItemId++] = HoldableKitItem(stack, period, onHold)
     }
 
+    /**
+     * Executes the given [callback] if the player of the
+     * [PlayerEvent] has this kit.
+     */
     inline fun <reified T : PlayerEvent> kitPlayerEvent(crossinline callback: (event: T) -> Unit) {
         kit.internal.kitPlayerEvents += listen<T> {
             if (it.player.hasKit(kit))
@@ -38,6 +57,10 @@ class KitBuilder<P : KitProperties>(val kit: Kit<P>) {
         }
     }
 
+    /**
+     * Executes the given [callback] if the player of the
+     * [playerGetter] has this kit.
+     */
     inline fun <reified T : Event> kitPlayerEvent(
         crossinline playerGetter: (T) -> Player?,
         crossinline callback: (event: T, player: Player) -> Unit,
@@ -49,6 +72,14 @@ class KitBuilder<P : KitProperties>(val kit: Kit<P>) {
         }
     }
 
+    /**
+     * Executes the given [block] if the player does not currently
+     * have a cooldown for this action.
+     *
+     * Inside if the [CooldownScope], you can use [CooldownScope.cancelCooldown]
+     * if you wish to not apply the cooldown regardless of the [block]
+     * being executed.
+     */
     inline fun Player.applyCooldown(cooldown: Cooldown, block: CooldownScope.() -> Unit) {
         if (!CooldownManager.hasCooldown(cooldown, this)) {
             if (CooldownScope().apply(block).shouldApply) {
@@ -57,6 +88,9 @@ class KitBuilder<P : KitProperties>(val kit: Kit<P>) {
         }
     }
 
+    /**
+     * @see [Player.applyCooldown]
+     */
     inline fun PlayerEvent.applyCooldown(cooldown: Cooldown, block: CooldownScope.() -> Unit) =
         player.applyCooldown(cooldown, block)
 }
