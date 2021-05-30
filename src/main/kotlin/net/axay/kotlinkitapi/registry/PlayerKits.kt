@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package net.axay.kotlinkitapi.registry
 
 import net.axay.kotlinkitapi.api.Kit
@@ -20,7 +22,7 @@ object PlayerKits {
 
     fun Player.addKit(kit: Kit<*>) {
         kits[uniqueId] = kit
-        // TODO: execute kit select logic here
+        kit.internal.givePlayer(this)
     }
 
     fun Player.hasKit(kit: Kit<*>): Boolean {

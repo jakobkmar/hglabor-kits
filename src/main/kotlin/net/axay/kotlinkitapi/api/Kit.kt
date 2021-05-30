@@ -3,6 +3,8 @@
 package net.axay.kotlinkitapi.api
 
 import net.axay.kotlinkitapi.builder.KitBuilder
+import net.axay.kspigot.utils.mark
+import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 
 open class Kit<P : KitProperties> private constructor(
@@ -15,27 +17,38 @@ open class Kit<P : KitProperties> private constructor(
      */
     val properties: P,
 ) {
-    class Internal internal constructor() {
-        companion object {
-            /**
-             * Do not use this function, it is only there to expose
-             * the private constructor publicly for inlining from a safe
-             * place.
-             */
-            fun <P : KitProperties> createKit(key: String, properties: P) = Kit(key, properties)
-        }
-
-        val items = ArrayList<KitItem>()
+    inner class Internal internal constructor() {
+        val items = HashMap<Int, KitItem>()
         val kitPlayerEvents = HashSet<Listener>()
+
+        fun givePlayer(player: Player) {
+            for ((id: Int, item: KitItem) in items) {
+                val kitItemStack = item.stack.apply { mark("kit_${key}_${id}") }
+                if (!player.inventory.contains(kitItemStack))
+                    player.inventory.addItem(kitItemStack)
+            }
+        }
     }
 
-    val internal = Internal()
+    /**
+     * Gives access to internal values which have to be
+     * public to make inlining possible.
+     */
+    val internal = this.Internal()
 
     init {
         properties.kitname = key
     }
 
     companion object {
+        /**
+         * Do not use this function, it is only there to expose
+         * the private constructor publicly for inlining from a safe
+         * place.
+         */
+        fun <P : KitProperties> createRawKit(key: String, properties: P) =
+            Kit(key, properties)
+
         /**
          * Creates a new lazy kit delegate.
          *
@@ -56,7 +69,7 @@ open class Kit<P : KitProperties> private constructor(
             crossinline properties: () -> P,
             crossinline builder: KitBuilder<P>.() -> Unit,
         ) = lazy {
-            Internal.createKit(
+            createRawKit(
                 key.toString().replaceFirstChar { it.lowercase() },
                 properties.invoke()
             ).apply {

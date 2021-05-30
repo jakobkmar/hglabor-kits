@@ -19,13 +19,15 @@ import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
 
 class KitBuilder<P : KitProperties>(val kit: Kit<P>) {
+    private var currentItemId = 0
+
     fun clickableItem(stack: ItemStack, onClick: (PlayerInteractEvent) -> Unit) {
-        kit.internal.items += ClickableKitItem(stack, onClick)
+        kit.internal.items[currentItemId++] = ClickableKitItem(stack, onClick)
     }
 
     @ExperimentalKitApi
     fun holdableItem(stack: ItemStack, period: Long, onHold: (Player) -> Unit) {
-        kit.internal.items += HoldableKitItem(stack, period, onHold)
+        kit.internal.items[currentItemId++] = HoldableKitItem(stack, period, onHold)
     }
 
     inline fun <reified T : PlayerEvent> kitPlayerEvent(crossinline callback: (event: T) -> Unit) {
