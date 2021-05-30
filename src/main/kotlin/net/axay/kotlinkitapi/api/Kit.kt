@@ -3,9 +3,12 @@
 package net.axay.kotlinkitapi.api
 
 import net.axay.kotlinkitapi.builder.KitBuilder
-import net.axay.kspigot.utils.mark
+import net.axay.kspigot.extensions.pluginKey
+import net.axay.kspigot.items.meta
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
+import org.bukkit.persistence.PersistentDataType.INTEGER
+import org.bukkit.persistence.PersistentDataType.STRING
 
 open class Kit<P : KitProperties> private constructor(
     /**
@@ -23,7 +26,12 @@ open class Kit<P : KitProperties> private constructor(
 
         fun givePlayer(player: Player) {
             for ((id: Int, item: KitItem) in items) {
-                val kitItemStack = item.stack.apply { mark("kit_${key}_${id}") }
+                val kitItemStack = item.stack.apply {
+                    meta {
+                        persistentDataContainer[kitItemKitKey, STRING] = key
+                        persistentDataContainer[kitItemIdKey, INTEGER] = id
+                    }
+                }
                 if (!player.inventory.contains(kitItemStack))
                     player.inventory.addItem(kitItemStack)
             }
@@ -41,6 +49,9 @@ open class Kit<P : KitProperties> private constructor(
     }
 
     companion object {
+        val kitItemKitKey = pluginKey("kitItemKit")
+        val kitItemIdKey = pluginKey("kitItemId")
+
         /**
          * Do not use this function, it is only there to expose
          * the private constructor publicly for inlining from a safe

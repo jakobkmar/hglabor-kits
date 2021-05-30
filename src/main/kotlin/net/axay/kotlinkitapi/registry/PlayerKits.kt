@@ -2,10 +2,14 @@
 
 package net.axay.kotlinkitapi.registry
 
+import net.axay.kotlinkitapi.api.ClickableKitItem
 import net.axay.kotlinkitapi.api.Kit
 import net.axay.kspigot.event.listen
 import org.bukkit.entity.Player
+import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.persistence.PersistentDataType.INTEGER
+import org.bukkit.persistence.PersistentDataType.STRING
 import java.util.*
 
 object PlayerKits {
@@ -17,6 +21,22 @@ object PlayerKits {
         listen<PlayerQuitEvent> {
             if (removeOnLeave)
                 kits -= it.player.uniqueId
+        }
+
+        listen<PlayerInteractEvent> { event ->
+            val item = event.item ?: return@listen
+            val playerKits = kits[event.player.uniqueId]
+            if (playerKits != null) {
+                val itemData = item.itemMeta?.persistentDataContainer ?: return@listen
+                val kitKey = itemData[Kit.kitItemKitKey, STRING] ?: return@listen
+                val kitItem = playerKits.find { it.key == kitKey }?.internal?.items
+                    ?.get(itemData[Kit.kitItemIdKey, INTEGER] ?: return@listen)
+
+                if (kitItem != null) {
+                    if (kitItem is ClickableKitItem)
+                        kitItem.onClick.invoke(event)
+                }
+            }
         }
     }
 
