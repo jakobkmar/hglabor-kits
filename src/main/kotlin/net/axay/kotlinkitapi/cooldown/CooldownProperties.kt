@@ -1,3 +1,5 @@
+@file:Suppress("unused", "MemberVisibilityCanBePrivate")
+
 package net.axay.kotlinkitapi.cooldown
 
 import net.axay.kotlinkitapi.api.KitProperties
