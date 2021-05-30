@@ -3,7 +3,11 @@
 package net.axay.kotlinkitapi.builder
 
 import net.axay.kotlinkitapi.api.*
+import net.axay.kotlinkitapi.cooldown.Cooldown
+import net.axay.kotlinkitapi.cooldown.CooldownManager
+import net.axay.kotlinkitapi.cooldown.CooldownScope
 import net.axay.kspigot.event.listen
+import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerEvent
 import org.bukkit.inventory.ItemStack
 
@@ -22,4 +26,15 @@ class KitBuilder<P : KitProperties>(val kit: Kit<P>) {
             callback.invoke(it)
         }
     }
+
+    fun Player.applyCooldown(cooldown: Cooldown, block: CooldownScope.() -> Unit) {
+        if (!CooldownManager.hasCooldown(cooldown, this)) {
+            if (CooldownScope().apply(block).shouldApply) {
+                CooldownManager.addCooldown(cooldown, this)
+            }
+        }
+    }
+
+    fun PlayerEvent.applyCooldown(cooldown: Cooldown, block: CooldownScope.() -> Unit) =
+        player.applyCooldown(cooldown, block)
 }
