@@ -20,7 +20,7 @@ dependencies {
     compileOnly("org.spigotmc:spigot:1.16.5-R0.1-SNAPSHOT")
     compileOnly("net.axay:spigot-language-kotlin:1.0.3")
 
-    api("net.axay:kspigot:1.16.28")
+    api("net.axay:kspigot:1.16.29")
 
     testCompileOnly("org.spigotmc:spigot:1.16.5-R0.1-SNAPSHOT")
 }
