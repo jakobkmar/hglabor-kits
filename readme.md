@@ -8,7 +8,7 @@ The library is available on Maven Central, add the following dependencies:
 implementation("net.axay:hglabor-kits:$version")
 ```
 
-The hglabor-kits also depends on [spigot-language-kotlin](https://github.com/bluefireoly/spigot-language-kotlin)
+hglabor-kits also depends on [spigot-language-kotlin](https://github.com/bluefireoly/spigot-language-kotlin)
 and [KSpigot](https://github.com/bluefireoly/KSpigot).
 
 Make sure to add `spigot-language-kotlin` as a "compileOnly" dependency and provide its plugin at runtime. Also, do not
@@ -72,7 +72,7 @@ The following code snippets will all be inside the kit body.
 
 #### Kit events
 
-The hglabor-kits can automatically check if a player (of a `PlayerEvent` has the kit).
+hglabor-kits can automatically check if a player (of a `PlayerEvent` has the kit).
 
 ```kotlin
 kitPlayerEvent<PlayerToggleSneakEvent> {
