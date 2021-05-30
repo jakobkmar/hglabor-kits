@@ -22,7 +22,7 @@ val Automatic = Kit("Automatic", ::AutomaticProperties) {
             if (!item.type.isSoup) continue
             player.health = min(
                 player.health + this.kit.properties.soupHealAmount,
-                player.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.value ?: 20.0
+                maxHealth
             )
             item.amount = 0
             break
