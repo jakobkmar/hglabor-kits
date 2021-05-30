@@ -1,14 +1,14 @@
-# KotlinKitAPI
+# hglabor-kits
 
 ## Dependency
 
-Add the following dependencies:
+The library is available on Maven Central, add the following dependencies:
 
 ```kotlin
-implementation("net.axay:kotlin-kit-api:$version")
+implementation("net.axay:hglabor-kits:$version")
 ```
 
-The KotlinKitAPI also depends on [spigot-language-kotlin](https://github.com/bluefireoly/spigot-language-kotlin)
+The hglabor-kits also depends on [spigot-language-kotlin](https://github.com/bluefireoly/spigot-language-kotlin)
 and [KSpigot](https://github.com/bluefireoly/KSpigot).
 
 Make sure to add `spigot-language-kotlin` as a "compileOnly" dependency and provide its plugin at runtime. Also, do not
@@ -72,7 +72,7 @@ The following code snippets will all be inside the kit body.
 
 #### Kit events
 
-The KotlinKitAPI can automatically check if a player (of a `PlayerEvent` has the kit).
+The hglabor-kits can automatically check if a player (of a `PlayerEvent` has the kit).
 
 ```kotlin
 kitPlayerEvent<PlayerToggleSneakEvent> {
@@ -121,7 +121,7 @@ kitPlayerEvent<PlayerToggleSneakEvent> {
 ##### Final result of Ninja kit example
 
 You can view the final implementation of the Ninja
-kit [here](/blob/main/src/main/kotlin/net/axay/kotlinkitapi/implementation/Ninja.kt).
+kit [here](/blob/main/src/main/kotlin/net/axay/hglabor-kits/implementation/Ninja.kt).
 
 Going further, there are features which we did not use when creating the Ninja kit:
 
