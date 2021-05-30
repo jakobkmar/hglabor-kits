@@ -12,7 +12,7 @@ The KotlinKitAPI also depends on [spigot-language-kotlin](https://github.com/blu
 and [KSpigot](https://github.com/bluefireoly/KSpigot).
 
 Make sure to add `spigot-language-kotlin` as a "compileOnly" dependency and provide its plugin at runtime. Also, do not
-forget to read the setup guide of KSpigot`.
+forget to read the setup guide of KSpigot.
 
 ## Usage
 
