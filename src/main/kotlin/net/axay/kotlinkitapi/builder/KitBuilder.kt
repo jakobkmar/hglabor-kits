@@ -7,6 +7,7 @@ import net.axay.kotlinkitapi.cooldown.Cooldown
 import net.axay.kotlinkitapi.cooldown.CooldownManager
 import net.axay.kotlinkitapi.cooldown.CooldownScope
 import net.axay.kotlinkitapi.registry.PlayerKits.hasKit
+import net.axay.kotlinkitapi.utils.ExperimentalKitApi
 import net.axay.kspigot.event.listen
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
@@ -18,12 +19,13 @@ class KitBuilder<P : KitProperties>(val kit: Kit<P>) {
         kit.internal.items += ClickableKitItem(stack, cooldown, onClick)
     }
 
+    @ExperimentalKitApi
     fun holdableItem(stack: ItemStack, period: Long, onHold: (KitContext<P>) -> Unit) {
         kit.internal.items += HoldableKitItem(stack, period, onHold)
     }
 
     inline fun <reified T : PlayerEvent> kitPlayerEvent(crossinline callback: (event: T) -> Unit) {
-        kit.internal.kitPlayerEvents += listen<T>(register = false) {
+        kit.internal.kitPlayerEvents += listen<T> {
             if (it.player.hasKit(kit))
                 callback.invoke(it)
         }
@@ -33,7 +35,7 @@ class KitBuilder<P : KitProperties>(val kit: Kit<P>) {
         crossinline playerGetter: (T) -> Player?,
         crossinline callback: (event: T, player: Player) -> Unit,
     ) {
-        kit.internal.kitPlayerEvents += listen<T>(register = false) {
+        kit.internal.kitPlayerEvents += listen<T> {
             val player = playerGetter(it) ?: return@listen
             if (player.hasKit(kit))
                 callback(it, player)
