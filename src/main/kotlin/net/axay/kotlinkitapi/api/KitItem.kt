@@ -2,6 +2,7 @@ package net.axay.kotlinkitapi.api
 
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.event.player.PlayerInteractAtEntityEvent
 import org.bukkit.inventory.ItemStack
 
 sealed class KitItem {
@@ -14,6 +15,12 @@ class ClickableKitItem(
     override val stack: ItemStack,
     val onClick: (PlayerInteractEvent) -> Unit,
 ) : KitItem()
+
+class ClickableKitItemAufGegner(
+    override val stack: ItemStack,
+    val onClick: (PlayerInteractAtEntityEvent) -> Unit,
+) : KitItem()
+
 
 class HoldableKitItem(
     override val stack: ItemStack,

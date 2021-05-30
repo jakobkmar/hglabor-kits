@@ -2,10 +2,7 @@
 
 package net.axay.kotlinkitapi.builder
 
-import net.axay.kotlinkitapi.api.ClickableKitItem
-import net.axay.kotlinkitapi.api.HoldableKitItem
-import net.axay.kotlinkitapi.api.Kit
-import net.axay.kotlinkitapi.api.KitProperties
+import net.axay.kotlinkitapi.api.*
 import net.axay.kotlinkitapi.cooldown.Cooldown
 import net.axay.kotlinkitapi.cooldown.CooldownManager
 import net.axay.kotlinkitapi.cooldown.CooldownScope
@@ -16,6 +13,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import org.bukkit.event.player.PlayerEvent
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.event.player.PlayerInteractAtEntityEvent
 import org.bukkit.inventory.ItemStack
 
 class KitBuilder<P : KitProperties>(val kit: Kit<P>) {
@@ -23,6 +21,10 @@ class KitBuilder<P : KitProperties>(val kit: Kit<P>) {
 
     fun clickableItem(stack: ItemStack, onClick: (PlayerInteractEvent) -> Unit) {
         kit.internal.items[currentItemId++] = ClickableKitItem(stack, onClick)
+    }
+
+    fun mitDemKitItemGegnerAnKlicken(stack: ItemStack, onClick: (PlayerInteractAtEntityEvent) -> Unit) {
+        kit.internal.items[currentItemId++] = ClickableKitItemAufGegner(stack, onClick)
     }
 
     @ExperimentalKitApi
