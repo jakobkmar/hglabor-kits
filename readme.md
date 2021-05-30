@@ -39,11 +39,17 @@ class NinjaProperties : CooldownProperties(30 * 1000) {
 Now we do have a `cooldown` property automatically, which opens up the possibility to use some nice extensions
 functions.
 
+#### Access the properties
+
+Inside the kit body (see below), you can access the properties via `kit.properties.yourProperty`. In our example that
+would be `kit.properties.maxDistance`.
+
 ### Kit logic
 
 #### Create the kit
 
-A kit can be created by calling the `invoke()` operator function of the `Kit` companion object:
+A kit can be created by calling the `invoke()` operator function of the `Kit` companion object. You have to pass a
+reference to the properties:
 
 ```kotlin
 val Ninja = Kit("Ninja", ::NinjaProperties) {
@@ -93,7 +99,8 @@ won't be executed.
 
 #### Cooldown
 
-You can apply the cooldown your `CooldownProperties` very easily if you are inside the kit body, by using the `applyCooldown` function and passing the `PlayerEvent` or the `Player` to it.
+You can apply the cooldown your `CooldownProperties` very easily if you are inside the kit body, by using
+the `applyCooldown` function and passing the `PlayerEvent` or the `Player` to it.
 
 Let us actually implement the teleport functionality of the Ninja kit, with our cooldown applied:
 
@@ -108,5 +115,37 @@ kitPlayerEvent<PlayerToggleSneakEvent> {
                 it.player.teleport(toPlayer)
         }
     }
+}
+```
+
+##### Final result of Ninja kit example
+
+You can view the final implementation of the Ninja
+kit [here](/blob/main/src/main/kotlin/net/axay/kotlinkitapi/implementation/Ninja.kt).
+
+Going further, there are features which we did not use when creating the Ninja kit:
+
+#### Kit items
+
+**Simple**
+
+Just give an item to the player:
+
+```kotlin
+simpleItem(ItemStack(Material.NETHERITE_SWORD))
+```
+
+**Clickable**
+
+Execute code when the player clicks his kit item:
+
+```kotlin
+clickableItem(
+    itemStack(Material.SPONGE) {
+        meta { setDisplayName("Jump") }
+    }
+) {
+    // it is the PlayerInteractEvent here
+    it.player.velocity = it.player.velocity.add(vecY(4))
 }
 ```
