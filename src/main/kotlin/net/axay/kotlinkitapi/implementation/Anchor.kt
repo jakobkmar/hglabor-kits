@@ -16,8 +16,7 @@ class AnchorProperties : KitProperties() {
 
 val Anchor = Kit("Anchor", ::AnchorProperties) {
     kitPlayerEvent<EntityDamageByEntityEvent>({ it.damager as? Player }) { it, damager ->
-        if (it.entity !is LivingEntity) return@kitPlayerEvent
-        val target = it.entity as LivingEntity
+        val target = (it.entity as? LivingEntity) ?: return@kitPlayerEvent
         task(delay = 1L, howOften = 1L) {
             target.velocity = Vector(0, 0, 0)
         }
