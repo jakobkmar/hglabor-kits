@@ -12,12 +12,13 @@ repositories {
     mavenLocal()
     mavenCentral()
     maven("https://repo.codemc.io/repository/maven-snapshots/")
+    maven("https://repo.pl3x.net/")
 }
 
 dependencies {
     implementation(kotlin("stdlib"))
 
-    compileOnly("org.spigotmc:spigot:1.16.5-R0.1-SNAPSHOT")
+    compileOnly("net.pl3x.purpur", "purpur-api", "1.16.5-R0.1-SNAPSHOT")
     compileOnly("net.axay:spigot-language-kotlin:1.0.3")
 
     api("net.axay:kspigot:1.16.29")
