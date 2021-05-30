@@ -11,7 +11,7 @@ import java.util.*
 object PlayerKits {
     var removeOnLeave = true
 
-    private val kits = HashMap<UUID, Kit<*>>()
+    private val kits = HashMap<UUID, MutableSet<Kit<*>>>()
 
     init {
         listen<PlayerQuitEvent> {
@@ -21,11 +21,11 @@ object PlayerKits {
     }
 
     fun Player.addKit(kit: Kit<*>) {
-        kits[uniqueId] = kit
+        kits.getOrPut(uniqueId) { HashSet() }.add(kit)
         kit.internal.givePlayer(this)
     }
 
     fun Player.hasKit(kit: Kit<*>): Boolean {
-        return kits[uniqueId] == kit
+        return kits[uniqueId]?.contains(kit) == true
     }
 }
