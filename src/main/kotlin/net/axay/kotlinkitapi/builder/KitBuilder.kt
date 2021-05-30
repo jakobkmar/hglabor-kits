@@ -1,4 +1,4 @@
-@file:Suppress("MemberVisibilityCanBePrivate")
+@file:Suppress("MemberVisibilityCanBePrivate", "unused")
 
 package net.axay.kotlinkitapi.builder
 
@@ -6,6 +6,7 @@ import net.axay.kotlinkitapi.api.*
 import net.axay.kotlinkitapi.cooldown.Cooldown
 import net.axay.kotlinkitapi.cooldown.CooldownManager
 import net.axay.kotlinkitapi.cooldown.CooldownScope
+import net.axay.kotlinkitapi.registry.PlayerKits.hasKit
 import net.axay.kspigot.event.listen
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
@@ -23,8 +24,8 @@ class KitBuilder<P : KitProperties>(val kit: Kit<P>) {
 
     inline fun <reified T : PlayerEvent> kitPlayerEvent(crossinline callback: (event: T) -> Unit) {
         kit.internal.kitPlayerEvents += listen<T>(register = false) {
-            // TODO if player kit == this kit
-            callback.invoke(it)
+            if (it.player.hasKit(kit))
+                callback.invoke(it)
         }
     }
 
@@ -34,8 +35,8 @@ class KitBuilder<P : KitProperties>(val kit: Kit<P>) {
     ) {
         kit.internal.kitPlayerEvents += listen<T>(register = false) {
             val player = playerGetter(it) ?: return@listen
-            // TODO if player kit == this kit
-            callback(it, player)
+            if (player.hasKit(kit))
+                callback(it, player)
         }
     }
 
