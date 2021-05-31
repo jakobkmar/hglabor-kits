@@ -46,7 +46,7 @@ val Archer = Kit("Archer", ::ArcherProperties) {
     }
 
     kitPlayerEvent<EntityShootBowEvent>({ it.entity as? Player }) { it, _ ->
-        if ((0..100).random() > this.kit.properties.probability) return@kitPlayerEvent
+        if ((1..100).random() > this.kit.properties.probability) return@kitPlayerEvent
         if (it.projectile !is Arrow) return@kitPlayerEvent
         val arrow = it.projectile as Arrow
         arrow.addCustomEffect(
