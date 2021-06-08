@@ -36,6 +36,11 @@ class KitBuilder<P : KitProperties>(val kit: Kit<P>) {
         kit.internal.items[currentItemId++] = ClickableKitItem(stack, onClick)
     }
 
+    /**
+     * Gives the [stack] to the player if he has the kit
+     * and executed the [onClick] callback when the player
+     * interacts at an entity with the item.
+     */
     fun clickOnEntityItem(stack: ItemStack, onClick: (PlayerInteractAtEntityEvent) -> Unit) {
         kit.internal.items[currentItemId++] = ClickableEntityKitItem(stack, onClick)
     }
