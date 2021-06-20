@@ -3,15 +3,16 @@ package net.axay.kotlinkitapi.implementation
 import net.axay.kotlinkitapi.api.Kit
 import net.axay.kotlinkitapi.cooldown.CooldownProperties
 import net.axay.kotlinkitapi.cooldown.applyCooldown
+import net.axay.kspigot.particles.KSpigotParticle
+import net.axay.kspigot.particles.particle
+import net.axay.kspigot.structures.ParticleCircle
+import net.axay.kspigot.structures.buildAt
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Particle
-import org.bukkit.World
 import org.bukkit.entity.Player
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.inventory.ItemStack
-import kotlin.math.cos
-import kotlin.math.sin
 import kotlin.random.Random
 
 
@@ -59,21 +60,16 @@ val Magma = Kit("Magma", ::MagmaProperties) {
 
 private fun spawnFireCircle(player: Player, radius: Double, height: Int) {
     val location: Location = player.location
-    val world: World = player.world
+    val extra: KSpigotParticle.() -> Unit = { extra = 0.0 }
     for (i in 0..radius.toInt()) {
-        world.spawnParticle(Particle.FLAME, location.clone().add(i.toDouble(), 0.0, 0.0), 0, 0.0, 0.0, 0.0, 8.0)
-        world.spawnParticle(Particle.FLAME, location.clone().add(i.toDouble() * -1, 0.0, 0.0), 0, 0.0, 0.0, 0.0, 8.0)
-        world.spawnParticle(Particle.FLAME, location.clone().add(0.0, 0.0, i.toDouble()), 0, 0.0, 0.0, 0.0, 8.0)
-        world.spawnParticle(Particle.FLAME, location.clone().add(0.0, 0.0, i.toDouble() * -1.0), 0, 0.0, 0.0, 0.0, 8.0)
+        location.clone().add(i.toDouble(), 0.0, 0.0).particle(Particle.FLAME, extra)
+        location.clone().add(i.toDouble() * -1, 0.0, 0.0).particle(Particle.FLAME, extra)
+        location.clone().add(0.0, 0.0, i.toDouble()).particle(Particle.FLAME, extra)
+        location.clone().add(0.0, 0.0, i.toDouble() * -1.0).particle(Particle.FLAME, extra)
     }
+
+    val circle = ParticleCircle(radius, particle(Particle.FLAME) { this.extra = 0.0 })
     for (i in 0 until height) {
-        var y = 0.0
-        while (y < Math.PI * 2) {
-            val x: Double = radius * cos(y)
-            val z: Double = radius * sin(y)
-            location.world
-                ?.spawnParticle(Particle.FLAME, location.clone().add(x, i.toDouble() / 4, z), 0, 0.0, 0.0, 0.0, 5.0)
-            y += .1
-        }
+        circle.edgeStructure.buildAt(location.clone().add(0.0, i.toDouble(), 0.0))
     }
 }
